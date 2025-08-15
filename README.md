@@ -9,7 +9,7 @@
 
 ### 📌 Project Description
 
-**Attendance Manager** is a **desktop-based Python application** built with Tkinter that allows teachers or administrators to **mark, search, and update student attendance** with ease.  
+**Attendance Manager** is a **desktop-based Python application** built with Tkinter that allows administrators to **mark, search, and update attendance** with ease.  
 It features a **calendar popup**, **duplicate prevention**, and **color-coded records** for quick visual status checking.  
 All data is stored in **CSV files**, one per date, making it easy to archive and share.
 
