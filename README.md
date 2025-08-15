@@ -1,8 +1,8 @@
 ## 📊 Attendance Manager
 
 ### 🧠 Technology
-- **Domain:** Attendance Tracking / GUI Applications
-- **Level:** Beginner–Intermediate
+- **Domain:** GUI Applications
+- **Level:** Intermediate
 - **Tech Stack:** Python, Tkinter, tkcalendar, CSV
 
 ---
