@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Attendance Manager</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            background: #f0f2f5;
+            color: #333;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: white;
+            text-align: center;
+            padding: 18px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        header h1 { margin: 0; font-size: 2em; }
+        .container { max-width: 1000px; margin: 25px auto; padding: 0 20px; }
+        .dashboard {
+            display: flex; justify-content: space-around; margin-bottom: 25px;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .stat {
+            flex: 1; min-width: 150px; background: white; padding: 16px;
+            border-radius: 12px; text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .stat h2 { margin: 0; font-size: 1.6em; }
+        .stat p { margin: 4px 0 0; font-weight: bold; color: #666; }
+        .card {
+            background: white; border-radius: 12px; padding: 22px;
+            margin-bottom: 25px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        h3 { margin-top: 0; margin-bottom: 15px; color: #007bff; font-size: 1.2em; }
+        label { display: block; margin-top: 12px; font-weight: 600; font-size: 0.9em; }
+        input, select {
+            padding: 8px; margin-top: 6px; border-radius: 6px; border: 1px solid #ccc;
+            font-size: 0.9em;
+        }
+        input[type="date"] { width: 150px; }
+        select[name="status"] { width: 120px; }
+        input[type="text"] { width: 100%; }
+        button {
+            background: #007bff; color: white; cursor: pointer; border: none;
+            border-radius: 8px; padding: 8px 14px; font-size: 0.9em;
+            transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;
+        }
+        button:hover { background: #0056b3; }
+        .delete-btn { background: #dc3545; }
+        .delete-btn:hover { background: darkred; }
+        .toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .messages { text-align: center; margin-bottom: 15px; }
+        .messages li {
+            display: inline-block; padding: 8px 14px; border-radius: 8px; margin: 4px;
+            font-size: 0.9em;
+        }
+        .messages li.green { background: #d4edda; color: #155724; }
+        .messages li.red { background: #f8d7da; color: #721c24; }
+        table {
+            width: 100%; border-collapse: collapse; background: white;
+            border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td { padding: 10px; text-align: center; font-size: 0.9em; }
+        th { background: #007bff; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        tr:hover { background: #eef6ff; }
+        .present { background: #28a745; color: white; font-weight: bold; }
+        .absent { background: #dc3545; color: white; font-weight: bold; }
+        .action-buttons {
+            display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <header><h1>Attendance Manager</h1></header>
+    <div class="container">
+
+        <!-- Quick Stats -->
+        <div class="dashboard">
+            <div class="stat" style="border-left: 5px solid #28a745;">
+                <h2>{{ records|selectattr('Status', 'equalto', 'Present')|list|length }}</h2>
+                <p>Present</p>
+            </div>
+            <div class="stat" style="border-left: 5px solid #dc3545;">
+                <h2>{{ records|selectattr('Status', 'equalto', 'Absent')|list|length }}</h2>
+                <p>Absent</p>
+            </div>
+            <div class="stat" style="border-left: 5px solid #007bff;">
+                <h2>{{ records|length }}</h2>
+                <p>Total Records</p>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="messages">
+              {% for category, msg in messages %}
+                <li class="{{ 'red' if category=='error' else 'green' }}">{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Mark Attendance -->
+        <div class="card">
+            <form method="POST">
+                <h3>📌 Mark Attendance</h3>
+                <label>Date:</label>
+                <input type="date" name="date" value="{{ selected_date_html }}" max="{{ today_html }}">
+                <label>Roll No.:</label>
+                <input type="text" name="roll_no">
+                <label>Name:</label>
+                <input type="text" name="name">
+                <label>Status:</label>
+                <select name="status">
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                <br><br>
+                <button type="submit" name="mark">✅ Mark Attendance</button>
+            </form>
+        </div>
+
+        <!-- Search + Download -->
+        <div class="card">
+            <form method="POST">
+                <h3>🔍 Search Attendance</h3>
+                <div class="toolbar">
+                    <input type="date" name="search_date" value="{{ selected_date_html }}" max="{{ today_html }}">
+                    <button type="submit" name="search">🔎 Search</button>
+                    <a href="{{ url_for('download', date_str=selected_date) }}">
+                        <button type="button">⬇ Download CSV</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Records -->
+        <h2>📋 Attendance Records for {{ selected_date }}</h2>
+        <table>
+            <tr>
+                <th>Date</th><th>Roll No.</th><th>Name</th><th>Status</th><th>Actions</th>
+            </tr>
+            {% for row in records %}
+            <tr>
+                <td>{{ row['Date'] }}</td>
+                <td>{{ row['Roll No.'] }}</td>
+                <td>{{ row['Name'] }}</td>
+                <td class="{{ row['Status']|lower }}">{{ row['Status'] }}</td>  <!-- ✅ colored cell -->
+                <td>
+                    <div class="action-buttons">
+                        <form method="POST" action="{{ url_for('update') }}">
+                            <input type="hidden" name="roll_no" value="{{ row['Roll No.'] }}">
+                            <input type="hidden" name="date" value="{{ row['Date'] }}">
+                            <select name="status">
+                                <option value="Present" {% if row['Status']=='Present' %}selected{% endif %}>Present</option>
+                                <option value="Absent" {% if row['Status']=='Absent' %}selected{% endif %}>Absent</option>
+                            </select>
+                            <button type="submit">✏ Update</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('delete') }}">
+                            <input type="hidden" name="roll_no" value="{{ row['Roll No.'] }}">
+                            <input type="hidden" name="date" value="{{ row['Date'] }}">
+                            <button type="submit" class="delete-btn">🗑 Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
