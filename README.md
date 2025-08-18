@@ -1,54 +1,57 @@
-## 📊 Attendance Manager
+# 📊 Attendance Manager (Flask Web App)
 
 ### 🧠 Technology
-- **Domain:** GUI Applications
-- **Level:** Intermediate
-- **Tech Stack:** Python, Tkinter, tkcalendar, CSV
+- **Domain:** Web Application / Attendance Tracking  
+- **Level:** Beginner – Intermediate  
+- **Tech Stack:** Python, Flask, HTML, CSV  
 
 ---
 
 ### 📌 Project Description
 
-**Attendance Manager** is a **desktop-based Python application** built with Tkinter that allows administrators to **mark, search, and update attendance** with ease.  
-It features a **calendar popup**, **duplicate prevention**, and **color-coded records** for quick visual status checking.  
-All data is stored in **CSV files**, one per date, making it easy to archive and share.
+**Attendance Manager** is a **Flask web application** that allows teachers or administrators to **record, search, update, delete, and download attendance** efficiently.  
+It uses **CSV files** to store daily attendance in a lightweight, portable format.  
+
+The system includes **input validation, duplicate prevention, and color-coded records**, ensuring accurate and user-friendly attendance management.
 
 ---
 
 ### 🔧 Features
 
-- **Mark Attendance** with Roll No., Name, Date, and Status
-- **Duplicate Protection** for the same roll number and date
-- **Search Attendance** by date
-- **Edit Status** via double-click dropdown
-- **Calendar Popup** for easy date selection (past and present only)
-- **Color-Coded Table**:
-  - 🟩 Present → Dark Green
-  - 🟥 Absent → Dark Red
-- **CSV Storage** with per-day files
+- ✅ **Mark Attendance** → Add Roll No., Name, Date, and Status (Present/Absent)  
+- 🛡 **Duplicate Prevention** → Prevents the same Roll No. being added twice for the same date  
+- 🔎 **Search Attendance** → View saved records by selecting a date  
+- ✏️ **Update Status** → Change Present/Absent dynamically  
+- 🗑 **Delete Records** → Remove student entries for a date  
+- 📥 **Download CSV** → Export daily attendance as `.csv` file  
+- 📅 **Validation** → Blocks future dates & ensures required fields  
 
 ---
 
-### 📦 Required Python Libraries
+### 📦 Requirements
 
-📅 **GUI & Calendar**  
-- `tkinter` – for the user interface  
-- `tkcalendar` – for date selection popup  
+- Python 3.7+  
+- Flask  
 
-📁 **Data Handling**  
-- `csv` – for reading and writing attendance files  
-- `os` – for file checks  
-- `datetime` – for date formatting and validation
-
-- ---
+Install dependencies with: pip install -r requirements.txt
 
 
+### 💾 Data Storage
 
-🤝 Contributing
+Attendance is saved in .csv files named by date:
+
+YYYY-MM-DD_Attendance.csv
+
+
+CSV Columns:
+
+Date, Roll No., Name, Status
+
+### 🤝 Contributing
 
 Contributions, suggestions, and feature requests are welcome!
 
-📄 License
+### 📄 License
 
-This project is for educational and personal use.
-Feel free to modify and use it as per your requirements.
+This project is intended for educational and personal use.
+Feel free to modify and improve it.
