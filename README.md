@@ -9,7 +9,7 @@
 
 ### 📌 Project Description
 
-**Attendance Manager** is a **Flask web application** that allows teachers or administrators to **record, search, update, delete, and download attendance** efficiently.  
+**Attendance Manager** is a **Flask web application** that allows administrators to **record, search, update, delete, and download attendance** efficiently.  
 It uses **CSV files** to store daily attendance in a lightweight, portable format.  
 
 The system includes **input validation, duplicate prevention, and color-coded records**, ensuring accurate and user-friendly attendance management.
