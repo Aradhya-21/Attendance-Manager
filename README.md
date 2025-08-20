@@ -2,7 +2,6 @@
 
 ### 🧠 Technology
 - **Domain:** Web Application / Attendance Tracking  
-- **Level:** Beginner – Intermediate  
 - **Tech Stack:** Python, Flask, HTML, CSV  
 
 ---
